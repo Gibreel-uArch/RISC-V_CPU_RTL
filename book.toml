@@ -1,6 +1,6 @@
 [book]
 title = "RISC-V CPU Project"
-authors = ["Your Name"]
+authors = ["Gibreel"]
 language = "ar"
 src = "docs"
 
@@ -8,7 +8,7 @@ src = "docs"
 # Preprocessors Configuration
 # ------------------------------------------------------------------------------
 #[preprocessor.katex]
-[preprocessor.pdf]
+#[preprocessor.pdf]
 [preprocessor.linkcheck]
 [preprocessor.toc]
 
@@ -19,4 +19,5 @@ command = "mdbook-mermaid"
 # Output Configuration
 # ------------------------------------------------------------------------------
 [output.html]
+html-dir = "rtl"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
