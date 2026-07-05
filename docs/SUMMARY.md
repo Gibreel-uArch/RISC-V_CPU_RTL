@@ -1,3 +1,3 @@
 # Summary
 
-- [Get started](./Get started.md)
+- [Get started](Get_started.md)
