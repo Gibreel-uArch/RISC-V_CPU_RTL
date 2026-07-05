@@ -1,0 +1,55 @@
+book
+*.js
+# ==============================================================================
+# Verilator & Build Outputs
+# ==============================================================================
+# Exclude the entire simulation output directory except the folder structure if needed
+sim/obj_dir/
+sim/logs/
+sim/waveforms/
+
+# In case any compilation happens in the root
+*.mk
+*.d
+*.o
+obj_dir/
+
+# Executables (Compiled simulation binaries)
+Vtop
+Vcounter
+*.exe
+
+# ==============================================================================
+# Waveforms & Simulation Traces
+# ==============================================================================
+# Exclude giant waveform files generated during simulation
+*.vcd
+*.vcd.idx
+*.fst
+*.ghw
+
+# ==============================================================================
+# C++ / Toolchain Artifacts
+# ==============================================================================
+# Common build and log files
+*.log
+*.status
+.stackdump
+
+# ==============================================================================
+# Editor & OS Specific Files
+# ==============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# IDEs and Editors (VS Code, Vim, etc.)
+.vscode/
+.idea/
+*.swp
+*~

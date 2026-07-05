@@ -1,0 +1,22 @@
+[book]
+title = "RISC-V CPU Project"
+authors = ["Your Name"]
+language = "ar"
+src = "docs"
+
+# ------------------------------------------------------------------------------
+# Preprocessors Configuration
+# ------------------------------------------------------------------------------
+#[preprocessor.katex]
+[preprocessor.pdf]
+[preprocessor.linkcheck]
+[preprocessor.toc]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+# ------------------------------------------------------------------------------
+# Output Configuration
+# ------------------------------------------------------------------------------
+[output.html]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
