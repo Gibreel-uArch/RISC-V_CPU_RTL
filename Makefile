@@ -18,7 +18,7 @@ WAVE_DIR  = $(SIM_DIR)/waveforms
 # Dynamic target modules (Can be overridden from command line)
 # Example: make run TOP=counter TB=tb_counter
 TOP ?= top
-TB  ?= tb
+TB  ?= $(TOP)_tb
 
 # Project source files
 RTL_SRCS  = $(wildcard $(SRC_DIR)/*.sv)
