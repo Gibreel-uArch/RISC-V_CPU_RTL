@@ -6,6 +6,6 @@ module instruction_memory (
     initial begin
         $readmemh("programe.hex",mem);
     end
-    assign instruction = mem[address >> 2];
+    assign instruction = mem[address[31:2]];
 
 endmodule
