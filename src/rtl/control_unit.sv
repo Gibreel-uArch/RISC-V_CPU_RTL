@@ -41,7 +41,7 @@ module control_unit (
             end
 
             // 4. Store Word (SW)
-            7'b0100111: begin
+            7'b0100011: begin
                 AluSrc   = 1'b1;
                 MemWrite = 1'b1;
                 AluOp    = 2'b00; 

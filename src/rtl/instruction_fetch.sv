@@ -1,8 +1,9 @@
 module instruction_fetch (
     input  logic clk, rst_n,
-    output logic [31:0] instruction,         
+    input  logic branch,
+    input  logic zero_flag,
     input  logic [31:0] imm,
-    input  logic branch
+    output logic [31:0] instruction         
 );
     logic [31:0] address;
     logic [31:0] programe_counter;
@@ -13,7 +14,7 @@ module instruction_fetch (
         .pc_out(address)
     );
     pc_logic pc_logic_inst(
-        .branch(branch),
+        .branch(branch && zero_flag),
         .imm(imm),
         .pc_in(address),
         .pc_next(programe_counter)

@@ -7,7 +7,7 @@ module memory (
 );
     logic [31:0] memory [0:1023];
     initial begin
-        $readmemh("memory.hex",memory);
+        $readmemh("memory.hex",memory, 16);
     end
     assign MemoryData = (MemRead) ? memory[address[31:2]] : 32'b0;
     
