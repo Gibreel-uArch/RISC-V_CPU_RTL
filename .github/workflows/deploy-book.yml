@@ -39,7 +39,7 @@ jobs:
           if [ -f mdbook-toc ]; then sudo mv mdbook-toc /usr/local/bin/; fi
       - name: Build Book
         run: |
-          mdbook-mermaid init
+          mdbook-mermaid install .
           mdbook build
 
       - name: Setup GitHub Pages Config
