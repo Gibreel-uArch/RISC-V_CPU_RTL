@@ -37,21 +37,10 @@ jobs:
 
           curl -sSL https://github.com/badboy/mdbook-toc/releases/download/v0.14.2/mdbook-toc-v0.14.2-x86_64-unknown-linux-gnu.tar.gz | tar -xz || true
           if [ -f mdbook-toc ]; then sudo mv mdbook-toc /usr/local/bin/; fi
-      - name: Install mdBook and Preprocessors
-        run: |
-          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz | tar -xz
-          sudo mv mdbook /usr/local/bin/
-
-          curl -sSL https://github.com/michael-f-bryan/mdbook-linkcheck/releases/download/v0.7.7/mdbook-linkcheck-v0.7.7-x86_64-unknown-linux-gnu.tar.gz | tar -xz || true
-          if [ -f mdbook-linkcheck ]; then sudo mv mdbook-linkcheck /usr/local/bin/; fi
-
-          curl -sSL https://github.com/badboy/mdbook-mermaid/releases/download/v0.14.0/mdbook-mermaid-v0.14.0-x86_64-unknown-linux-gnu.tar.gz | tar -xz || true
-          sudo find . -name "mdbook-mermaid" -exec mv {} /usr/local/bin/ \;
-
-          curl -sSL https://github.com/badboy/mdbook-toc/releases/download/v0.14.2/mdbook-toc-v0.14.2-x86_64-unknown-linux-gnu.tar.gz | tar -xz || true
-          if [ -f mdbook-toc ]; then sudo mv mdbook-toc /usr/local/bin/; fi
       - name: Build Book
-        run: mdbook build
+        run: |
+          mdbook-mermaid init
+          mdbook build
 
       - name: Setup GitHub Pages Config
         uses: actions/configure-pages@v4
