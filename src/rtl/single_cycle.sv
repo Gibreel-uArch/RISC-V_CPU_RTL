@@ -115,20 +115,13 @@ alu u_alu (
     .zero_flag(zero_flag)
 );
 // always @(posedge clk) begin
-//     if (rst_n) begin
-//         $display("Instruction: %h | ALU_Out: %h | RegWrite: %b | WB_Data: %h", 
-//         instruction, alu_result, RegWrite, WriteBackData);
-//         //$display("Instr: %h | Imm: %h",  instruction, imm);
-//     end
+//     $display("------------------------------------------------------------------------------------------------------------------------");
+//     $display("PC_Instr: %h | Opcode: %b | rs1: %d | rs2: %d | rd: %d", instruction, opcode, rs1, rs2, rd);
+//     $display("------------------------------------------------------------------------------------------------------------------------");
+//     $display("DATA PATH:  ReadData1: %h | ReadData2: %h | Imm: %h | Mux_ALU_Src: %h", ReadData1, ReadData2, imm, mux_alu_src_out);
+//     $display("ALU & MEM:  ALU_Out: %h | Zero: %b | MemData: %h | WB_Data: %h", alu_result, zero_flag, MemoryData, WriteBackData);
+//     $display("CONTROLS:  Branch: %b | AluSrc: %b | AluOp: %b | AluCtrl: %b | MemRead: %b | MemWrite: %b | MemtoReg: %b | RegWrite: %b", 
+//               branch, AluSrc, AluOp, alu_control, MemRead, MemWrite, MemtoReg, RegWrite);
+//     $display("------------------------------------------------------------------------------------------------------------------------\n");
 // end
-always @(posedge clk) begin
-    $display("------------------------------------------------------------------------------------------------------------------------");
-    $display("PC_Instr: %h | Opcode: %b | rs1: %d | rs2: %d | rd: %d", instruction, opcode, rs1, rs2, rd);
-    $display("------------------------------------------------------------------------------------------------------------------------");
-    $display("DATA PATH:  ReadData1: %h | ReadData2: %h | Imm: %h | Mux_ALU_Src: %h", ReadData1, ReadData2, imm, mux_alu_src_out);
-    $display("ALU & MEM:  ALU_Out: %h | Zero: %b | MemData: %h | WB_Data: %h", alu_result, zero_flag, MemoryData, WriteBackData);
-    $display("CONTROLS:  Branch: %b | AluSrc: %b | AluOp: %b | AluCtrl: %b | MemRead: %b | MemWrite: %b | MemtoReg: %b | RegWrite: %b", 
-              branch, AluSrc, AluOp, alu_control, MemRead, MemWrite, MemtoReg, RegWrite);
-    $display("------------------------------------------------------------------------------------------------------------------------\n");
-end
 endmodule
