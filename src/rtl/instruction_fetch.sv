@@ -1,26 +1,31 @@
 module instruction_fetch (
-    input  logic clk, rst_n,
-    input  logic branch,
-    input  logic zero_flag,
+    input  logic        clk, rst_n,
+    input  logic        take_branch,
+    input  logic        JumpImm,
+    input  logic        JumpReg,
+    input  logic [31:0] alu_result,
     input  logic [31:0] imm,
-    output logic [31:0] instruction         
+    output logic [31:0] instruction,
+    output logic [31:0] pc_plus_4       
 );
-    logic [31:0] address;
-    logic [31:0] programe_counter;
-    pc pc_inst (
+
+    logic [31:0] current_address;
+
+    pc_unit pc_block (
         .clk(clk),
         .rst_n(rst_n),
-        .pc_in(programe_counter),
-        .pc_out(address)
-    );
-    pc_logic pc_logic_inst(
-        .branch(branch && zero_flag),
+        .take_branch(take_branch),
+        .JumpImm(JumpImm),
+        .JumpReg(JumpReg),
+        .alu_result(alu_result),
         .imm(imm),
-        .pc_in(address),
-        .pc_next(programe_counter)
+        .pc_current(current_address),
+        .pc_plus_4(pc_plus_4) 
     );
-    instruction_memory inst_mem(
-        .address(address),
+
+    instruction_memory inst_mem (
+        .address(current_address),
         .instruction(instruction)
     );
+
 endmodule

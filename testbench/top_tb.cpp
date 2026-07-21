@@ -1,7 +1,7 @@
 #include <iostream>
 #include <verilated.h>
 #include <verilated_vcd_c.h>
-#include "Vsingle_cycle.h"
+#include "Vtop.h"
 
 vluint64_t main_time = 0;
 
@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     Verilated::traceEverOn(true);
 
-    Vsingle_cycle* top = new Vsingle_cycle;
+    Vtop* top = new Vtop;
     VerilatedVcdC* tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
     tfp->open("waveform.vcd");
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
     top->rst_n = 1;
 
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < 400; i++) {
         top->clk = !top->clk;
         top->eval();
         tfp->dump(main_time++);

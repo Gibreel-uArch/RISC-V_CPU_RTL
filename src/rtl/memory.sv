@@ -1,14 +1,14 @@
 module memory (
-    input  logic clk, rst_n,
+    input  logic clk,
     input  logic MemRead,MemWrite,
     input  logic [31:0] WriteData,
     input  logic [31:0] address,
     output logic [31:0] MemoryData
 );
-    logic [31:0] memory [0:1023];
-    initial begin
-        $readmemh("memory.hex",memory, 16);
-    end
+    logic [31:0] memory [0:16383]; // /* verilator public */ 
+    // initial begin
+    //     $readmemh("memory.hex",memory);
+    // end
     assign MemoryData = (MemRead) ? memory[address[31:2]] : 32'b0;
     
     always_ff @(posedge clk) begin 
