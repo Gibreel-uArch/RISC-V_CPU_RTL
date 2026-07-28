@@ -4,7 +4,8 @@ module pc_unit (
     input  logic        take_branch,
     input  logic        JumpImm,
     input  logic        JumpReg,
-    input  logic [31:0] alu_result,
+    input  logic [31:0] instruction_address,
+    input  logic [31:0] ReadData1,
     input  logic [31:0] imm,
     output logic [31:0] pc_current,   
     output logic [31:0] pc_plus_4     
@@ -16,9 +17,9 @@ module pc_unit (
     
     always_comb begin
         if (take_branch || JumpImm) begin
-            pc_next = pc_current + imm;
+            pc_next = instruction_address + imm;
         end else if (JumpReg) begin
-            pc_next = alu_result;
+            pc_next = ReadData1 + imm;
         end else begin
             pc_next = pc_plus_4;
         end
