@@ -60,7 +60,7 @@ init:
 # Run Verilator compilation
 compile: init $(RTL_SRCS) $(TB_SRC)
 	@echo "Running Verilator Compilation..."
-	$(VERILATOR) $(VERILATOR_FLAGS) $(RTL_SRCS) $(TB_SRC)
+	$(VERILATOR) $(VERILATOR_FLAGS) src/includes/rv32_types_pkg.sv $(RTL_SRCS) $(TB_SRC)
 
 # Compile C++ models into simulation binary executable
 build: compile

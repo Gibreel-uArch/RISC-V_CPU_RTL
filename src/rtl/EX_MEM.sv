@@ -1,40 +1,59 @@
+/**
+ * @file EX_MEM.sv
+ * @brief Execute to Memory (EX/MEM) Pipeline Register Stage
+ * @details This module registers data and control signals passing from 
+ *          the Execute (EX) stage to the Memory (MEM) stage. 
+ *          It handles asynchronous active-low reset and normal pipeline progression.
+ */
+
 import rv32_types_pkg::*;
 
 module EX_MEM (
+    // Clock and Reset
     input  logic          clk, 
     input  logic          rst_n,
-    input  logic [2:0]    func3_in,
-    input  logic [4:0]    rd_in,
-    input  logic [31:0]   pc_plus_4_in,
-    input  logic [31:0]   alu_result_in,
-    input  logic [31:0]   src2_in,
-    input  mem_wb_ctrl_t  mem_wb_ctrl_in,
-    output logic [2:0]    func3_out,
-    output logic [4:0]    rd_out,
-    output logic [31:0]   pc_plus_4_out,
-    output logic [31:0]   alu_result_out,
-    output logic [31:0]   src2_out,
-    output mem_ctrl_t     mem_ctrl_out,
-    output wb_ctrl_t      wb_ctrl_out
+
+    // Data & Function Fields (Input from EX Stage)
+    input  logic [2:0]    ex_func3,
+    input  logic [4:0]    ex_rd,
+    input  logic [31:0]   ex_pc_plus_4,
+    input  logic [31:0]   ex_alu_result,
+    input  logic [31:0]   ex_store_data,
+    
+    // Control Signals Input
+    input  mem_wb_ctrl_t  ex_mem_wb_ctrl,
+
+    // Data & Function Fields (Output to MEM Stage)
+    output logic [2:0]    mem_func3,
+    output logic [4:0]    mem_rd,
+    output logic [31:0]   mem_pc_plus_4,
+    output logic [31:0]   mem_alu_result,
+    output logic [31:0]   mem_store_data,
+    
+    // Control Signals Output
+    output mem_ctrl_t     mem_ctrl,
+    output wb_ctrl_t      mem_wb_ctrl
 );
 
     always_ff @(posedge clk or negedge rst_n) begin 
         if (!rst_n) begin
-            func3_out      <= 3'b0;
-            rd_out         <= 5'b0;
-            pc_plus_4_out  <= 32'b0;
-            alu_result_out <= 32'b0;
-            src2_out       <= 32'b0;
-            mem_ctrl_out   <= '0;
-            wb_ctrl_out    <= '0;
+            // Asynchronous active-low reset: clear all pipeline registers and control signals
+            mem_func3      <= 3'b0;
+            mem_rd         <= 5'b0;
+            mem_pc_plus_4  <= 32'b0;
+            mem_alu_result <= 32'b0;
+            mem_store_data <= 32'b0;
+            mem_ctrl       <= '0;
+            mem_wb_ctrl    <= '0;
         end else begin
-            func3_out      <= func3_in;
-            rd_out         <= rd_in;
-            pc_plus_4_out  <= pc_plus_4_in;
-            alu_result_out <= alu_result_in;
-            src2_out       <= src2_in;
-            mem_ctrl_out   <= mem_wb_ctrl_in.mem;
-            wb_ctrl_out    <= mem_wb_ctrl_in.wb;
+            // Normal pipeline operation: propagate EX signals to MEM stage
+            mem_func3      <= ex_func3;
+            mem_rd         <= ex_rd;
+            mem_pc_plus_4  <= ex_pc_plus_4;
+            mem_alu_result <= ex_alu_result;
+            mem_store_data <= ex_store_data;
+            mem_ctrl       <= ex_mem_wb_ctrl.mem;
+            mem_wb_ctrl    <= ex_mem_wb_ctrl.wb;
         end
     end
 

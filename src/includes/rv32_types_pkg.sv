@@ -3,8 +3,11 @@ package rv32_types_pkg;
     typedef struct packed {
         logic       Branch;
         logic       JumpImm;  
-        logic       JumpReg;  
+        logic       JumpReg;
+        logic       UseRs1;
+        logic       UseRs2;
     } id_ctrl_t;
+
     typedef struct packed {
         logic [2:0] AluOp;
         logic       AluSrc1;  
