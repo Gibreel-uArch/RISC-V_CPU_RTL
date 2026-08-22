@@ -42,9 +42,7 @@ module ID_EX (
     output logic [31:0]          ex_imm,
     
     // Control Signals Output
-    output ctrl_signals_t        ex_id_ctrl,
-    output ex_ctrl_t             ex_ctrl,
-    output mem_wb_ctrl_t         ex_mem_wb_ctrl
+    output ctrl_signals_t        ex_ctrl,
 );
 
     always_ff @(posedge clk or negedge rst_n) begin  
@@ -60,9 +58,7 @@ module ID_EX (
             ex_src1        <= 32'b0;
             ex_src2        <= 32'b0;
             ex_imm         <= 32'b0;
-            ex_id_ctrl     <= '0;
             ex_ctrl        <= '0;
-            ex_mem_wb_ctrl <= '0;
         end 
         else if (id_ex_flush) begin
             // Synchronous flush: insert a bubble (NOP) by zeroing out control and data fields
@@ -76,9 +72,7 @@ module ID_EX (
             ex_src1        <= 32'b0;
             ex_src2        <= 32'b0;
             ex_imm         <= 32'b0;
-            ex_id_ctrl     <= '0;
             ex_ctrl        <= '0; // Neutralize execution control signals
-            ex_mem_wb_ctrl <= '0; // Neutralize memory/writeback control signals
         end 
         else begin
             // Normal pipeline operation: propagate inputs to outputs
@@ -93,9 +87,7 @@ module ID_EX (
             ex_src2        <= id_src2;
             ex_imm         <= id_imm;
             ex_ctrl        <= id_ctrl.ex;
-            ex_id_ctrl     <= id_ctrl;
-            ex_mem_wb_ctrl.mem <= id_ctrl.mem;
-            ex_mem_wb_ctrl.wb  <= id_ctrl.wb;
+            ex_ctrl        <= id_ctrl;
         end
     end
 

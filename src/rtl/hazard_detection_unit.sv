@@ -15,7 +15,7 @@ module hazard_detection_unit (
   
     // Control Structures
     input  ctrl_signals_t id_ctrl,       // Decoded control signals for instruction in ID stage
-    input  mem_ctrl_t     ex_mem_ctrl,   // Memory stage control signals of instruction in ID/EX stage
+    input  ctrl_signals_t ex_ctrl,       // control signals of instruction in ID/EX stage
     
     // Control Hazard Trigger
     input  logic          take_branch,   // Branch taken signal from branch unit
@@ -50,7 +50,7 @@ module hazard_detection_unit (
          *          This cannot be bypassed via forwarding alone because the data is not yet read from memory.
          *          Action: Stall PC and IF/ID, and insert a bubble into ID/EX.
          */
-        if (ex_mem_ctrl.MemRead && (ex_rd != 5'd0)) begin
+        if (ex_ctrl.mem.MemRead && (ex_rd != 5'd0)) begin
             if ((id_ctrl.id.UseRs1 && (id_rs1 == ex_rd)) ||
                 (id_ctrl.id.UseRs2 && (id_rs2 == ex_rd))) begin
                 

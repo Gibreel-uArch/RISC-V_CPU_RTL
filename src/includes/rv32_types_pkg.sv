@@ -1,9 +1,9 @@
 package rv32_types_pkg;
     
     typedef struct packed {
-        logic       Branch;
         logic       JumpImm;  
         logic       JumpReg;
+        logic       Branch;
         logic       UseRs1;
         logic       UseRs2;
     } id_ctrl_t;
@@ -31,10 +31,5 @@ package rv32_types_pkg;
         mem_ctrl_t mem;
         wb_ctrl_t  wb;
     } ctrl_signals_t;
-
-    typedef struct packed {
-        mem_ctrl_t mem;
-        wb_ctrl_t  wb;
-    } mem_wb_ctrl_t;
 
 endpackage

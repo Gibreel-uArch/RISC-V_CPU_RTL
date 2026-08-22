@@ -14,7 +14,7 @@ module top (
     output logic [31:0] address,
     output logic [31:0] WriteData
 );
-assign MemWrite  = mem_ctrl.MemWrite;
+assign MemWrite  = mem_ctrl.mem.MemWrite;
 assign address   = mem_alu_result;
 assign WriteData = mem_store_data;
     // =========================================================================
@@ -106,9 +106,9 @@ assign WriteData = mem_store_data;
     hazard_detection_unit u_hazard_detection_unit (
         .id_rs1       (id_rs1),
         .id_rs2       (id_rs2),
-        .id_ctrl      (id_ctrl),
         .ex_rd        (ex_rd),
-        .ex_mem_ctrl  (ex_mem_wb_ctrl),
+        .id_ctrl      (id_ctrl),
+        .ex_ctrl      (ex_ctrl),
         .take_branch  (id_take_branch),
         .id_ex_flush  (id_ex_flush),
         .if_id_flush  (if_id_flush),
@@ -118,18 +118,17 @@ assign WriteData = mem_store_data;
     );
 
     forwarding_unit u_forwarding_unit (
-        .id_rd          (ex_rd),
-        .ex_rd          (mem_rd),
-        .mem_rd         (wb_rd),
-        .id_rs1         (ex_rs1),
-        .id_rs2         (ex_rs2),
-        .if_rs1         (id_rs1),
-        .if_rs2         (id_rs2),
-        .if_ctrl        (id_ctrl),
-        .id_ctrl        (ex_id_ctrl),
-        .ex_wb_ctrl     (mem_wb_ctrl),
-        .ex_mem_ctrl    (mem_ctrl),
-        .mem_ctrl       (wb_ctrl),
+        .ex_rd          (ex_rd),
+        .mem_rd         (mem_rd),
+        .wb_rd          (wb_rd),
+        .ex_rs1         (ex_rs1),
+        .ex_rs2         (ex_rs2),
+        .id_rs1         (id_rs1),
+        .id_rs2         (id_rs2),
+        .id_ctrl        (id_ctrl),
+        .ex_ctrl        (ex_ctrl),
+        .mem_ctrl       (mem_ctrl),
+        .wb_ctrl        (wb_ctrl),
         .ForwardA       (ForwardA),
         .ForwardB       (ForwardB),
         .ForwardStore   (ForwardStore),
@@ -145,7 +144,7 @@ assign WriteData = mem_store_data;
     registers_file u_registers_file (
         .clk       (clk),
         .rst_n     (rst_n),
-        .RegWrite  (wb_ctrl.RegWrite),
+        .RegWrite  (wb_ctrl.wb.RegWrite),
         .rs1       (id_rs1),
         .rs2       (id_rs2),
         .rd        (wb_rd),
@@ -197,9 +196,7 @@ assign WriteData = mem_store_data;
     logic         [ 4:0] ex_rd;
     logic         [ 2:0] ex_func3;
     logic         [ 6:0] ex_func7;
-    ctrl_signals_t       ex_id_ctrl;
-    ex_ctrl_t            ex_ctrl;
-    mem_wb_ctrl_t        ex_mem_wb_ctrl;
+    ctrl_signals_t       ex_ctrl;
 
     ID_EX u_ID_EX (
         .clk            (clk),
@@ -227,9 +224,7 @@ assign WriteData = mem_store_data;
         .ex_src1        (ex_src1),
         .ex_src2        (ex_src2),
         .ex_imm         (ex_imm),
-        .ex_id_ctrl     (ex_id_ctrl),
-        .ex_ctrl        (ex_ctrl),
-        .ex_mem_wb_ctrl (ex_mem_wb_ctrl)
+        .ex_ctrl        (ex_ctrl)
     );
 
 
@@ -247,14 +242,14 @@ assign WriteData = mem_store_data;
     logic        ex_zero, ex_less, ex_less_unsigned;
 
     alu_control_unit u_alu_control_unit (
-        .AluOp       (ex_ctrl.AluOp),
+        .AluOp       (ex_ctrl.ex.AluOp),
         .func3       (ex_func3),
         .func7       (ex_func7),
         .alu_control (ex_alu_control)
     );
 
     always_comb begin
-        unique case (ex_ctrl.AluSrc1)
+        unique case (ex_ctrl.ex.AluSrc1)
             1'b0    : ex_mux_alu_src1_out = ex_src1;
             1'b1    : ex_mux_alu_src1_out = ex_pc_current;
             default : ex_mux_alu_src1_out = ex_src1;
@@ -262,7 +257,7 @@ assign WriteData = mem_store_data;
     end
 
     always_comb begin
-        unique case (ex_ctrl.AluSrc2)
+        unique case (ex_ctrl.ex.AluSrc2)
             1'b0    : ex_mux_alu_src2_out = ex_src2;
             1'b1    : ex_mux_alu_src2_out = ex_imm;
             default : ex_mux_alu_src2_out = ex_src2;
@@ -315,13 +310,12 @@ assign WriteData = mem_store_data;
     // -------------------------------------------------------------------------
     // PIPELINE REGISTER: EX / MEM
     // -------------------------------------------------------------------------
-    logic [31:0] mem_alu_result;
-    logic [31:0] mem_store_data;
-    logic [31:0] mem_pc_plus_4;
-    logic [ 4:0] mem_rd;
-    logic [ 2:0] mem_func3;
-    mem_ctrl_t   mem_ctrl;
-    wb_ctrl_t    mem_wb_ctrl;
+    logic [31:0]     mem_alu_result;
+    logic [31:0]     mem_store_data;
+    logic [31:0]     mem_pc_plus_4;
+    logic [ 4:0]     mem_rd;
+    logic [ 2:0]     mem_func3;
+    ctrl_signals_t   mem_ctrl;
 
     EX_MEM u_EX_MEM (
         .clk            (clk),
@@ -331,15 +325,14 @@ assign WriteData = mem_store_data;
         .ex_pc_plus_4   (ex_pc_plus_4),
         .ex_alu_result  (ex_alu_result),
         .ex_store_data  (ex_store_data),
-        .ex_mem_wb_ctrl (ex_mem_wb_ctrl),
+        .ex_ctrl        (ex_ctrl),
 
         .mem_func3      (mem_func3),
         .mem_rd         (mem_rd),
         .mem_pc_plus_4  (mem_pc_plus_4),
         .mem_alu_result (mem_alu_result),
         .mem_store_data (mem_store_data),
-        .mem_ctrl       (mem_ctrl),
-        .mem_wb_ctrl    (mem_wb_ctrl)
+        .mem_ctrl       (mem_ctrl)
     );
 
 
@@ -351,8 +344,8 @@ assign WriteData = mem_store_data;
     memory u_data_memory (
         .clk        (clk),
         .func3      (mem_func3),
-        .MemRead    (mem_ctrl.MemRead),
-        .MemWrite   (mem_ctrl.MemWrite),
+        .MemRead    (mem_ctrl.mem.MemRead),
+        .MemWrite   (mem_ctrl.mem.MemWrite),
         .WriteData  (mem_store_data),
         .address    (mem_alu_result),
         .MemoryData (mem_memory_data)
@@ -361,10 +354,10 @@ assign WriteData = mem_store_data;
     // -------------------------------------------------------------------------
     // PIPELINE REGISTER: MEM / WB
     // -------------------------------------------------------------------------
-    logic [31:0] wb_alu_result;
-    logic [31:0] wb_memory_data;
-    logic [31:0] wb_pc_plus_4;
-    wb_ctrl_t    wb_ctrl;
+    logic [31:0]     wb_alu_result;
+    logic [31:0]     wb_memory_data;
+    logic [31:0]     wb_pc_plus_4;
+    ctrl_signals_t   wb_ctrl;
 
     MEM_WB u_MEM_WB (
         .clk             (clk),
@@ -373,7 +366,7 @@ assign WriteData = mem_store_data;
         .mem_pc_plus_4   (mem_pc_plus_4),
         .mem_alu_result  (mem_alu_result),
         .mem_memory_data (mem_memory_data),
-        .mem_wb_ctrl     (mem_wb_ctrl),
+        .mem_ctrl        (mem_ctrl),
 
         .wb_rd           (wb_rd),
         .wb_pc_plus_4    (wb_pc_plus_4),
@@ -391,7 +384,7 @@ assign WriteData = mem_store_data;
     logic [ 4:0] wb_rd;
 
     always_comb begin
-        unique case (wb_ctrl.MemtoReg)
+        unique case (wb_ctrl.wb.MemtoReg)
             1'b0    : wb_writeback_data = wb_alu_result;
             1'b1    : wb_writeback_data = wb_memory_data;
             default : wb_writeback_data = wb_alu_result;
@@ -399,7 +392,7 @@ assign WriteData = mem_store_data;
     end
 
     always_comb begin
-        unique case (wb_ctrl.WriteData)
+        unique case (wb_ctrl.wb.WriteData)
             1'b0    : wb_reg_write_data = wb_writeback_data;
             1'b1    : wb_reg_write_data = wb_pc_plus_4;
             default : wb_reg_write_data = wb_writeback_data;
@@ -452,7 +445,7 @@ assign WriteData = mem_store_data;
       $display(" [3. EX Stage]  PC Current  : %h  |  Dest Reg : %s",
                ex_pc_current, get_reg_name(ex_rd));
       $display("                Usage Flags : UseRs1=%b   | UseRs2=%b",
-               ex_id_ctrl.id.UseRs1, ex_id_ctrl.id.UseRs2);
+               ex_ctrl.id.UseRs1, ex_ctrl.id.UseRs2);
       $display("                Forwarding  : FwdA=%b (Val: %h)  --> ALU In1: %h", 
                ForwardA, ex_mux_alu_src1_out, ex_alu_operand_a);
       $display("                Forwarding  : FwdB=%b (Val: %h)  --> ALU In2: %h", 
@@ -467,14 +460,14 @@ assign WriteData = mem_store_data;
       $display(" [4. MEM Stage] ALU Result  : %h  |  Store Data : %h  |  Dest Reg : %s",
                mem_alu_result, mem_store_data, get_reg_name(mem_rd));
       $display("                Mem Action  : Read=%b     | Write=%b      | Data Out : %h",
-               mem_ctrl.MemRead, mem_ctrl.MemWrite, mem_memory_data);
+               mem_ctrl.mem.MemRead, mem_ctrl.mem.MemWrite, mem_memory_data);
 
       // 5. WRITE BACK STAGE
       $display(" --------------------------------------------------------------------------------------------------");
       $display(" [5. WB Stage]  ALU Result  : %h  |  Mem Data   : %h  |  Final WB : %h",
                wb_alu_result, wb_memory_data, wb_reg_write_data);
       $display("                Control     : RegWrite=%b | Dest Reg  : %s",
-               wb_ctrl.RegWrite, get_reg_name(wb_rd));
+               wb_ctrl.wb.RegWrite, get_reg_name(wb_rd));
 
       $display("==================================================================================================\n");
      end

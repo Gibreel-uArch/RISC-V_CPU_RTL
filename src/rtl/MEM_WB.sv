@@ -18,14 +18,14 @@ module MEM_WB (
     input  logic [31:0]          mem_pc_plus_4,
     input  logic [31:0]          mem_alu_result,
     input  logic [31:0]          mem_memory_data, 
-    input  wb_ctrl_t             mem_wb_ctrl,
+    input  ctrl_signals_t        mem_ctrl,
 
     // Data & Control Outputs to WB Stage
     output logic [ 4:0]          wb_rd,
     output logic [31:0]          wb_pc_plus_4,
     output logic [31:0]          wb_alu_result,
     output logic [31:0]          wb_memory_data, 
-    output wb_ctrl_t             wb_ctrl
+    output ctrl_signals_t        wb_ctrl
 );
 
     always_ff @(posedge clk or negedge rst_n) begin  
@@ -43,7 +43,7 @@ module MEM_WB (
             wb_pc_plus_4    <= mem_pc_plus_4;
             wb_alu_result   <= mem_alu_result;
             wb_memory_data  <= mem_memory_data;
-            wb_ctrl         <= mem_wb_ctrl; 
+            wb_ctrl         <= mem_ctrl; 
         end
     end
 
