@@ -18,6 +18,7 @@ module MEM_WB (
     input  logic [31:0]          mem_pc_plus_4,
     input  logic [31:0]          mem_alu_result,
     input  logic [31:0]          mem_memory_data, 
+    input  logic [31:0]          mem_csr_rdata, 
     input  ctrl_signals_t        mem_ctrl,
 
     // Data & Control Outputs to WB Stage
@@ -25,25 +26,28 @@ module MEM_WB (
     output logic [31:0]          wb_pc_plus_4,
     output logic [31:0]          wb_alu_result,
     output logic [31:0]          wb_memory_data, 
+    output logic [31:0]          wb_csr_rdata,   
     output ctrl_signals_t        wb_ctrl
 );
 
-    always_ff @(posedge clk or negedge rst_n) begin  
+    always_ff @(posedge clk or negedge rst_n) begin   
         if (!rst_n) begin
             // Asynchronous active-low reset: clear all pipeline registers
-            wb_rd           <= 5'b0;
-            wb_pc_plus_4    <= 32'b0;
-            wb_alu_result   <= 32'b0;
-            wb_memory_data  <= 32'b0;
-            wb_ctrl         <= '0; 
+            wb_rd          <= 5'b0;
+            wb_pc_plus_4   <= 32'b0;
+            wb_alu_result  <= 32'b0;
+            wb_memory_data <= 32'b0;
+            wb_csr_rdata   <= 32'b0;
+            wb_ctrl        <= '0; 
         end 
         else begin
             // Normal pipeline operation: propagate inputs to outputs
-            wb_rd           <= mem_rd;
-            wb_pc_plus_4    <= mem_pc_plus_4;
-            wb_alu_result   <= mem_alu_result;
-            wb_memory_data  <= mem_memory_data;
-            wb_ctrl         <= mem_ctrl; 
+            wb_rd          <= mem_rd;
+            wb_pc_plus_4   <= mem_pc_plus_4;
+            wb_alu_result  <= mem_alu_result;
+            wb_memory_data <= mem_memory_data;
+            wb_csr_rdata   <= mem_csr_rdata; 
+            wb_ctrl        <= mem_ctrl; 
         end
     end
 

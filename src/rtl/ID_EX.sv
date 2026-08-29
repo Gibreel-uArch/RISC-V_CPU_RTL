@@ -23,11 +23,12 @@ module ID_EX (
     input  logic [31:0]          id_pc_plus_4,
     input  logic [31:0]          id_pc_current,
     input  logic [31:0]          id_imm,
-    input  logic [31:0]          id_src1,
-    input  logic [31:0]          id_src2,
+    input  logic [31:0]          id_read_data1,
+    input  logic [31:0]          id_read_data2,
     
     // Control Signals Input
     input  ctrl_signals_t        id_ctrl,
+    input  excep_signals_t       id_excep,
 
     // Pipeline Outputs to EX Stage
     output logic [ 2:0]          ex_func3,
@@ -37,12 +38,13 @@ module ID_EX (
     output logic [ 4:0]          ex_rd,
     output logic [31:0]          ex_pc_current,
     output logic [31:0]          ex_pc_plus_4,
-    output logic [31:0]          ex_src1,
-    output logic [31:0]          ex_src2,
+    output logic [31:0]          ex_read_data1,
+    output logic [31:0]          ex_read_data2,
     output logic [31:0]          ex_imm,
     
     // Control Signals Output
     output ctrl_signals_t        ex_ctrl,
+    output excep_signals_t       ex_excep
 );
 
     always_ff @(posedge clk or negedge rst_n) begin  
@@ -55,10 +57,11 @@ module ID_EX (
             ex_rs2         <= 5'b0;
             ex_pc_current  <= 32'b0;
             ex_pc_plus_4   <= 32'b0;
-            ex_src1        <= 32'b0;
-            ex_src2        <= 32'b0;
+            ex_read_data1  <= 32'b0;
+            ex_read_data2  <= 32'b0;
             ex_imm         <= 32'b0;
             ex_ctrl        <= '0;
+            ex_excep       <= '0;
         end 
         else if (id_ex_flush) begin
             // Synchronous flush: insert a bubble (NOP) by zeroing out control and data fields
@@ -69,10 +72,11 @@ module ID_EX (
             ex_rd          <= 5'b0;
             ex_pc_current  <= 32'b0;
             ex_pc_plus_4   <= 32'b0;
-            ex_src1        <= 32'b0;
-            ex_src2        <= 32'b0;
+            ex_read_data1  <= 32'b0;
+            ex_read_data2  <= 32'b0;
             ex_imm         <= 32'b0;
             ex_ctrl        <= '0; // Neutralize execution control signals
+            ex_excep       <= '0;
         end 
         else begin
             // Normal pipeline operation: propagate inputs to outputs
@@ -83,11 +87,12 @@ module ID_EX (
             ex_rd          <= id_rd;
             ex_pc_current  <= id_pc_current;
             ex_pc_plus_4   <= id_pc_plus_4;
-            ex_src1        <= id_src1;
-            ex_src2        <= id_src2;
+            ex_read_data1  <= id_read_data1;
+            ex_read_data2  <= id_read_data2;
             ex_imm         <= id_imm;
             ex_ctrl        <= id_ctrl.ex;
             ex_ctrl        <= id_ctrl;
+            ex_excep       <= id_excep;
         end
     end
 

@@ -14,11 +14,14 @@ module pc_unit (
     
     // Control Signals
     input  logic        stall_pc,
+    output logic        trap_jump,
+    output logic        mret_jump,
     input  logic        take_branch,
     input  logic        JumpImm,
     input  logic        JumpReg,
     
     // Target Addresses & Operands
+    input  logic [31:0] trap_next_pc,
     input  logic [31:0] instruction_address,
     input  logic [31:0] ReadData1,
     input  logic [31:0] imm,
@@ -39,13 +42,22 @@ module pc_unit (
      */
     always_comb begin
         if (stall_pc) begin 
-            pc_next = pc_current; // Hold current PC on pipeline stall
-        end else if (take_branch || JumpImm) begin
+            pc_next = pc_current;                // Hold current PC on pipeline stall
+        end
+        else if (trap_jump) begin 
+            pc_next = trap_next_pc;              // jump to trap handling address
+        end
+        else if (mret_jump) begin
+            pc_next = trap_next_pc;              // jump to main program where it stops
+        end
+        else if (take_branch || JumpImm) begin
             pc_next = instruction_address + imm; // Branch or JAL target address
-        end else if (JumpReg) begin
-            pc_next = ReadData1 + imm;          // JALR target address
-        end else begin
-            pc_next = pc_plus_4;                // Default sequential execution
+        end
+        else if (JumpReg) begin
+            pc_next = ReadData1 + imm;           // JALR target address
+        end
+        else begin
+            pc_next = pc_plus_4;                 // Default sequential execution
         end
     end
 

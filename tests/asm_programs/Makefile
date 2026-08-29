@@ -1,7 +1,7 @@
 CC = riscv32-unknown-elf-gcc
 OBJCOPY = riscv32-unknown-elf-objcopy
 OBJDUMP = riscv32-unknown-elf-objdump
-CFLAGS = -march=rv32i -mabi=ilp32 -O0 -nostdlib
+CFLAGS = -march=rv32i_zicsr -mabi=ilp32 -O0 -nostdlib
 LDFLAGS = -T link.ld
 
 ifndef NAME
@@ -10,13 +10,7 @@ endif
 
 all: clean_temp $(NAME).hex $(NAME).txt clean
 
-startup.o: startup.s
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(NAME).o: $(NAME).c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(NAME).elf: startup.o $(NAME).o
+$(NAME).elf: $(NAME).S
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(NAME).hex: $(NAME).elf

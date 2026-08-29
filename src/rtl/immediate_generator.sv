@@ -20,7 +20,7 @@ module immediate_generator (
     always_comb begin 
         case (instruction[6:0])
             // 1. I-type instructions (e.g., Load, JALR, I-type ALU) -> imm[11:0]
-            7'b0010011, 7'b0000011, 7'b1100111: begin
+            7'b0010011, 7'b0000011, 7'b1100111, 7'b1110011: begin
                 imm = {{20{instruction[31]}}, instruction[31:20]};
             end
             

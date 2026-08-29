@@ -17,8 +17,11 @@ module instruction_fetch (
     input  logic        JumpImm,
     input  logic        JumpReg,
     input  logic        stall_pc,
+    output logic        trap_jump,
+    output logic        mret_jump,
     
     // Target Addresses & Operands
+    input  logic [31:0] trap_next_pc,        // next pc from trap controller
     input  logic [31:0] instruction_address, // Base address for branch/jump calculations
     input  logic [31:0] ReadData1,           // Register source for JALR
     input  logic [31:0] imm,                 // Immediate offset
@@ -34,6 +37,9 @@ module instruction_fetch (
         .clk                 (clk),
         .rst_n               (rst_n),
         .stall_pc            (stall_pc),
+        .trap_jump           (trap_jump),
+        .mret_jump           (mret_jump),
+        .trap_next_pc        (trap_next_pc),
         .take_branch         (take_branch),
         .JumpImm             (JumpImm),
         .JumpReg             (JumpReg),

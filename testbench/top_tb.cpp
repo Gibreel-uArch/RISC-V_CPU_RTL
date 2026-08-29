@@ -18,14 +18,14 @@ void check_mmio_exit() {
 
     if (exit_code == 0x5555) {
       std::cout << "\n========================================" << std::endl;
-      std::cout << " TEST PASSED! Factorial result is correct." << std::endl;
+      std::cout << " TEST PASSED!." << std::endl;
       std::cout << " Exit code: 0x" << std::hex << exit_code << std::endl;
       std::cout << " Cycles executed: " << std::dec << sim_time / 2
                 << std::endl;
       std::cout << "========================================\n" << std::endl;
     } else if (exit_code == 0xDEAD) {
       std::cout << "\n========================================" << std::endl;
-      std::cout << " TEST FAILED! Incorrect factorial result." << std::endl;
+      std::cout << " TEST FAILED!" << std::endl;
       std::cout << " Exit code: 0x" << std::hex << exit_code << std::endl;
       std::cout << "========================================\n" << std::endl;
     } else {
