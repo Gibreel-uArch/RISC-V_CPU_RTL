@@ -1,4 +1,4 @@
-#define INPUT_VALUE 5 // Change this to test different numbers
+#define INPUT_VALUE 7 // Change this to test different numbers
 #define EXIT_REG_ADDR                                                          \
   0x40000000 // Common memory-mapped address for testbench exit/pass/fail
 
@@ -26,10 +26,9 @@ void main(void) {
   // Compute factorial
   unsigned int result = calculate_factorial(INPUT_VALUE);
 
-  // Expected result for 5! is 120 (0x78)
   volatile int *exit_reg = (volatile int *)EXIT_REG_ADDR;
 
-  if (result == 120) {
+  if (result == 5040) {
     *exit_reg = 0x5555; // Pass signature for testbench
   } else {
     *exit_reg = 0xDEAD; // Fail signature

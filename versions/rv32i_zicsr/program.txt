@@ -1,0 +1,271 @@
+
+exceptions.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00003117          	auipc	sp,0x3
+   4:	80010113          	addi	sp,sp,-2048 # 2800 <debug_info>
+   8:	00000297          	auipc	t0,0x0
+   c:	23028293          	addi	t0,t0,560 # 238 <trap_handler>
+  10:	30529073          	csrw	mtvec,t0
+  14:	00000413          	li	s0,0
+  18:	00000493          	li	s1,0
+  1c:	00000913          	li	s2,0
+  20:	00100993          	li	s3,1
+  24:	000012b7          	lui	t0,0x1
+  28:	23428293          	addi	t0,t0,564 # 1234 <forever_from_trap+0xef8>
+  2c:	00000313          	li	t1,0
+  30:	00000073          	ecall
+  34:	000053b7          	lui	t2,0x5
+  38:	67838393          	addi	t2,t2,1656 # 5678 <stack_top+0x167c>
+  3c:	00731463          	bne	t1,t2,44 <test1_fail>
+  40:	00c0006f          	j	4c <test1_pass>
+
+00000044 <test1_fail>:
+  44:	00100513          	li	a0,1
+  48:	1e00006f          	j	228 <write_result>
+
+0000004c <test1_pass>:
+  4c:	00140413          	addi	s0,s0,1
+  50:	00148493          	addi	s1,s1,1
+  54:	0040006f          	j	58 <test2_start>
+
+00000058 <test2_start>:
+  58:	00200993          	li	s3,2
+  5c:	0000a2b7          	lui	t0,0xa
+  60:	abc28293          	addi	t0,t0,-1348 # 9abc <stack_top+0x5ac0>
+  64:	00000313          	li	t1,0
+  68:	00100073          	ebreak
+  6c:	0000e3b7          	lui	t2,0xe
+  70:	ef038393          	addi	t2,t2,-272 # def0 <stack_top+0x9ef4>
+  74:	00731463          	bne	t1,t2,7c <test2_fail>
+  78:	00c0006f          	j	84 <test2_pass>
+
+0000007c <test2_fail>:
+  7c:	00200513          	li	a0,2
+  80:	1a80006f          	j	228 <write_result>
+
+00000084 <test2_pass>:
+  84:	00140413          	addi	s0,s0,1
+  88:	00148493          	addi	s1,s1,1
+  8c:	0040006f          	j	90 <test3_start>
+
+00000090 <test3_start>:
+  90:	00300993          	li	s3,3
+  94:	0000b2b7          	lui	t0,0xb
+  98:	aaa28293          	addi	t0,t0,-1366 # aaaa <stack_top+0x6aae>
+  9c:	00000073          	ecall
+  a0:	000053b7          	lui	t2,0x5
+  a4:	67838393          	addi	t2,t2,1656 # 5678 <stack_top+0x167c>
+  a8:	00731a63          	bne	t1,t2,bc <test3_fail>
+  ac:	34202e73          	csrr	t3,mcause
+  b0:	00b00e93          	li	t4,11
+  b4:	01de1463          	bne	t3,t4,bc <test3_fail>
+  b8:	00c0006f          	j	c4 <test3_pass>
+
+000000bc <test3_fail>:
+  bc:	00300513          	li	a0,3
+  c0:	1680006f          	j	228 <write_result>
+
+000000c4 <test3_pass>:
+  c4:	00140413          	addi	s0,s0,1
+  c8:	00148493          	addi	s1,s1,1
+  cc:	0040006f          	j	d0 <test4_start>
+
+000000d0 <test4_start>:
+  d0:	00400993          	li	s3,4
+  d4:	0000c2b7          	lui	t0,0xc
+  d8:	eef28293          	addi	t0,t0,-273 # beef <stack_top+0x7ef3>
+  dc:	ffffffff          	.word	0xffffffff
+  e0:	00400513          	li	a0,4
+  e4:	1440006f          	j	228 <write_result>
+
+000000e8 <test5_start>:
+  e8:	00500993          	li	s3,5
+  ec:	300022f3          	csrr	t0,mstatus
+  f0:	00800313          	li	t1,8
+  f4:	30033073          	csrc	mstatus,t1
+  f8:	00000313          	li	t1,0
+  fc:	00000073          	ecall
+ 100:	000053b7          	lui	t2,0x5
+ 104:	67838393          	addi	t2,t2,1656 # 5678 <stack_top+0x167c>
+ 108:	00731663          	bne	t1,t2,114 <test5_fail>
+ 10c:	30032073          	csrs	mstatus,t1
+ 110:	00c0006f          	j	11c <test5_pass>
+
+00000114 <test5_fail>:
+ 114:	00500513          	li	a0,5
+ 118:	1100006f          	j	228 <write_result>
+
+0000011c <test5_pass>:
+ 11c:	00140413          	addi	s0,s0,1
+ 120:	00148493          	addi	s1,s1,1
+ 124:	0040006f          	j	128 <test6_start>
+
+00000128 <test6_start>:
+ 128:	00600993          	li	s3,6
+ 12c:	00000313          	li	t1,0
+ 130:	00000073          	ecall
+ 134:	000053b7          	lui	t2,0x5
+ 138:	67838393          	addi	t2,t2,1656 # 5678 <stack_top+0x167c>
+ 13c:	02731863          	bne	t1,t2,16c <test6_fail>
+ 140:	00000313          	li	t1,0
+ 144:	00000073          	ecall
+ 148:	000053b7          	lui	t2,0x5
+ 14c:	67838393          	addi	t2,t2,1656 # 5678 <stack_top+0x167c>
+ 150:	00731e63          	bne	t1,t2,16c <test6_fail>
+ 154:	00000313          	li	t1,0
+ 158:	00100073          	ebreak
+ 15c:	0000e3b7          	lui	t2,0xe
+ 160:	ef038393          	addi	t2,t2,-272 # def0 <stack_top+0x9ef4>
+ 164:	00731463          	bne	t1,t2,16c <test6_fail>
+ 168:	00c0006f          	j	174 <test6_pass>
+
+0000016c <test6_fail>:
+ 16c:	00600513          	li	a0,6
+ 170:	0b80006f          	j	228 <write_result>
+
+00000174 <test6_pass>:
+ 174:	00140413          	addi	s0,s0,1
+ 178:	00148493          	addi	s1,s1,1
+ 17c:	0040006f          	j	180 <test7_start>
+
+00000180 <test7_start>:
+ 180:	00700993          	li	s3,7
+ 184:	111112b7          	lui	t0,0x11111
+ 188:	11128293          	addi	t0,t0,273 # 11111111 <stack_top+0x1110d115>
+ 18c:	22222337          	lui	t1,0x22222
+ 190:	22230313          	addi	t1,t1,546 # 22222222 <stack_top+0x2221e226>
+ 194:	333333b7          	lui	t2,0x33333
+ 198:	33338393          	addi	t2,t2,819 # 33333333 <stack_top+0x3332f337>
+ 19c:	44444e37          	lui	t3,0x44444
+ 1a0:	444e0e13          	addi	t3,t3,1092 # 44444444 <stack_top+0x44440448>
+ 1a4:	55555eb7          	lui	t4,0x55555
+ 1a8:	555e8e93          	addi	t4,t4,1365 # 55555555 <stack_top+0x55551559>
+ 1ac:	00030a13          	mv	s4,t1
+ 1b0:	00000073          	ecall
+ 1b4:	11111f37          	lui	t5,0x11111
+ 1b8:	111f0f13          	addi	t5,t5,273 # 11111111 <stack_top+0x1110d115>
+ 1bc:	03e29c63          	bne	t0,t5,1f4 <test7_fail>
+ 1c0:	33333f37          	lui	t5,0x33333
+ 1c4:	333f0f13          	addi	t5,t5,819 # 33333333 <stack_top+0x3332f337>
+ 1c8:	03e39663          	bne	t2,t5,1f4 <test7_fail>
+ 1cc:	44444f37          	lui	t5,0x44444
+ 1d0:	444f0f13          	addi	t5,t5,1092 # 44444444 <stack_top+0x44440448>
+ 1d4:	03ee1063          	bne	t3,t5,1f4 <test7_fail>
+ 1d8:	55555f37          	lui	t5,0x55555
+ 1dc:	555f0f13          	addi	t5,t5,1365 # 55555555 <stack_top+0x55551559>
+ 1e0:	01ee9a63          	bne	t4,t5,1f4 <test7_fail>
+ 1e4:	00005f37          	lui	t5,0x5
+ 1e8:	678f0f13          	addi	t5,t5,1656 # 5678 <stack_top+0x167c>
+ 1ec:	01e31463          	bne	t1,t5,1f4 <test7_fail>
+ 1f0:	00c0006f          	j	1fc <test7_pass>
+
+000001f4 <test7_fail>:
+ 1f4:	00700513          	li	a0,7
+ 1f8:	0300006f          	j	228 <write_result>
+
+000001fc <test7_pass>:
+ 1fc:	00140413          	addi	s0,s0,1
+ 200:	00148493          	addi	s1,s1,1
+ 204:	0040006f          	j	208 <test_suite_complete>
+
+00000208 <test_suite_complete>:
+ 208:	400002b7          	lui	t0,0x40000
+ 20c:	0082a023          	sw	s0,0(t0) # 40000000 <stack_top+0x3fffc004>
+ 210:	0092a223          	sw	s1,4(t0)
+ 214:	0122a423          	sw	s2,8(t0)
+ 218:	0002a623          	sw	zero,12(t0)
+ 21c:	00005537          	lui	a0,0x5
+ 220:	55550513          	addi	a0,a0,1365 # 5555 <stack_top+0x1559>
+ 224:	0040006f          	j	228 <write_result>
+
+00000228 <write_result>:
+ 228:	400002b7          	lui	t0,0x40000
+ 22c:	00a2a023          	sw	a0,0(t0) # 40000000 <stack_top+0x3fffc004>
+ 230:	0040006f          	j	234 <forever>
+
+00000234 <forever>:
+ 234:	0000006f          	j	234 <forever>
+
+00000238 <trap_handler>:
+ 238:	fc010113          	addi	sp,sp,-64
+ 23c:	00112023          	sw	ra,0(sp)
+ 240:	00512223          	sw	t0,4(sp)
+ 244:	00712423          	sw	t2,8(sp)
+ 248:	01c12623          	sw	t3,12(sp)
+ 24c:	01d12823          	sw	t4,16(sp)
+ 250:	01e12a23          	sw	t5,20(sp)
+ 254:	01f12c23          	sw	t6,24(sp)
+ 258:	01312e23          	sw	s3,28(sp)
+ 25c:	03412023          	sw	s4,32(sp)
+ 260:	342022f3          	csrr	t0,mcause
+ 264:	341023f3          	csrr	t2,mepc
+ 268:	02712223          	sw	t2,36(sp)
+ 26c:	00b00e13          	li	t3,11
+ 270:	01c28c63          	beq	t0,t3,288 <handle_ecall>
+ 274:	00300e13          	li	t3,3
+ 278:	03c28c63          	beq	t0,t3,2b0 <handle_ebreak>
+ 27c:	00200e13          	li	t3,2
+ 280:	05c28c63          	beq	t0,t3,2d8 <handle_illegal>
+ 284:	0780006f          	j	2fc <trap_error>
+
+00000288 <handle_ecall>:
+ 288:	00005337          	lui	t1,0x5
+ 28c:	67830313          	addi	t1,t1,1656 # 5678 <stack_top+0x167c>
+ 290:	341023f3          	csrr	t2,mepc
+ 294:	00438393          	addi	t2,t2,4
+ 298:	34139073          	csrw	mepc,t2
+ 29c:	40000e37          	lui	t3,0x40000
+ 2a0:	100e0e13          	addi	t3,t3,256 # 40000100 <stack_top+0x3fffc104>
+ 2a4:	005e2023          	sw	t0,0(t3)
+ 2a8:	007e2223          	sw	t2,4(t3)
+ 2ac:	0640006f          	j	310 <trap_return>
+
+000002b0 <handle_ebreak>:
+ 2b0:	0000e337          	lui	t1,0xe
+ 2b4:	ef030313          	addi	t1,t1,-272 # def0 <stack_top+0x9ef4>
+ 2b8:	341023f3          	csrr	t2,mepc
+ 2bc:	00438393          	addi	t2,t2,4
+ 2c0:	34139073          	csrw	mepc,t2
+ 2c4:	40000e37          	lui	t3,0x40000
+ 2c8:	100e0e13          	addi	t3,t3,256 # 40000100 <stack_top+0x3fffc104>
+ 2cc:	005e2023          	sw	t0,0(t3)
+ 2d0:	007e2223          	sw	t2,4(t3)
+ 2d4:	03c0006f          	j	310 <trap_return>
+
+000002d8 <handle_illegal>:
+ 2d8:	00005537          	lui	a0,0x5
+ 2dc:	55550513          	addi	a0,a0,1365 # 5555 <stack_top+0x1559>
+ 2e0:	400002b7          	lui	t0,0x40000
+ 2e4:	00a2a023          	sw	a0,0(t0) # 40000000 <stack_top+0x3fffc004>
+ 2e8:	400003b7          	lui	t2,0x40000
+ 2ec:	0083a023          	sw	s0,0(t2) # 40000000 <stack_top+0x3fffc004>
+ 2f0:	0093a223          	sw	s1,4(t2)
+ 2f4:	0123a423          	sw	s2,8(t2)
+ 2f8:	0440006f          	j	33c <forever_from_trap>
+
+000002fc <trap_error>:
+ 2fc:	0000e537          	lui	a0,0xe
+ 300:	ead50513          	addi	a0,a0,-339 # dead <stack_top+0x9eb1>
+ 304:	400002b7          	lui	t0,0x40000
+ 308:	00a2a023          	sw	a0,0(t0) # 40000000 <stack_top+0x3fffc004>
+ 30c:	0300006f          	j	33c <forever_from_trap>
+
+00000310 <trap_return>:
+ 310:	00012083          	lw	ra,0(sp)
+ 314:	00412283          	lw	t0,4(sp)
+ 318:	00812383          	lw	t2,8(sp)
+ 31c:	00c12e03          	lw	t3,12(sp)
+ 320:	01012e83          	lw	t4,16(sp)
+ 324:	01412f03          	lw	t5,20(sp)
+ 328:	01812f83          	lw	t6,24(sp)
+ 32c:	01c12983          	lw	s3,28(sp)
+ 330:	02012a03          	lw	s4,32(sp)
+ 334:	04010113          	addi	sp,sp,64
+ 338:	30200073          	mret
+
+0000033c <forever_from_trap>:
+ 33c:	0000006f          	j	33c <forever_from_trap>

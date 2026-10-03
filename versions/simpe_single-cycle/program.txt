@@ -1,0 +1,24 @@
+
+simple.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00500093          	li	ra,5
+   4:	00300113          	li	sp,3
+   8:	002081b3          	add	gp,ra,sp
+   c:	00302023          	sw	gp,0(zero) # 0 <_start>
+  10:	00002203          	lw	tp,0(zero) # 0 <_start>
+  14:	00418463          	beq	gp,tp,1c <pass>
+  18:	00000663          	beqz	zero,24 <fail>
+
+0000001c <pass>:
+  1c:	00100f93          	li	t6,1
+  20:	00000463          	beqz	zero,28 <end>
+
+00000024 <fail>:
+  24:	00000f93          	li	t6,0
+
+00000028 <end>:
+  28:	00000063          	beqz	zero,28 <end>

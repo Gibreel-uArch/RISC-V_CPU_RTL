@@ -1,0 +1,102 @@
+
+factorial.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00020117          	auipc	sp,0x20
+   4:	00010113          	mv	sp,sp
+   8:	0fc000ef          	jal	104 <main>
+   c:	0040006f          	j	10 <_exit>
+
+00000010 <_exit>:
+  10:	40000537          	lui	a0,0x40000
+  14:	0000d5b7          	lui	a1,0xd
+  18:	afe58593          	addi	a1,a1,-1282 # cafe <main+0xc9fa>
+  1c:	00b52023          	sw	a1,0(a0) # 40000000 <__stack_top+0x3ffe0000>
+  20:	ff1ff06f          	j	10 <_exit>
+
+00000024 <__mulsi3>:
+  24:	fd010113          	addi	sp,sp,-48 # 1ffd0 <main+0x1fecc>
+  28:	02112623          	sw	ra,44(sp)
+  2c:	02812423          	sw	s0,40(sp)
+  30:	03010413          	addi	s0,sp,48
+  34:	fca42e23          	sw	a0,-36(s0)
+  38:	fcb42c23          	sw	a1,-40(s0)
+  3c:	fe042623          	sw	zero,-20(s0)
+  40:	0380006f          	j	78 <__mulsi3+0x54>
+  44:	fd842783          	lw	a5,-40(s0)
+  48:	0017f793          	andi	a5,a5,1
+  4c:	00078a63          	beqz	a5,60 <__mulsi3+0x3c>
+  50:	fec42703          	lw	a4,-20(s0)
+  54:	fdc42783          	lw	a5,-36(s0)
+  58:	00f707b3          	add	a5,a4,a5
+  5c:	fef42623          	sw	a5,-20(s0)
+  60:	fdc42783          	lw	a5,-36(s0)
+  64:	00179793          	slli	a5,a5,0x1
+  68:	fcf42e23          	sw	a5,-36(s0)
+  6c:	fd842783          	lw	a5,-40(s0)
+  70:	0017d793          	srli	a5,a5,0x1
+  74:	fcf42c23          	sw	a5,-40(s0)
+  78:	fd842783          	lw	a5,-40(s0)
+  7c:	fc0794e3          	bnez	a5,44 <__mulsi3+0x20>
+  80:	fec42783          	lw	a5,-20(s0)
+  84:	00078513          	mv	a0,a5
+  88:	02c12083          	lw	ra,44(sp)
+  8c:	02812403          	lw	s0,40(sp)
+  90:	03010113          	addi	sp,sp,48
+  94:	00008067          	ret
+
+00000098 <calculate_factorial>:
+  98:	fd010113          	addi	sp,sp,-48
+  9c:	02112623          	sw	ra,44(sp)
+  a0:	02812423          	sw	s0,40(sp)
+  a4:	03010413          	addi	s0,sp,48
+  a8:	fca42e23          	sw	a0,-36(s0)
+  ac:	00100793          	li	a5,1
+  b0:	fef42623          	sw	a5,-20(s0)
+  b4:	00100793          	li	a5,1
+  b8:	fef42423          	sw	a5,-24(s0)
+  bc:	0240006f          	j	e0 <calculate_factorial+0x48>
+  c0:	fe842583          	lw	a1,-24(s0)
+  c4:	fec42503          	lw	a0,-20(s0)
+  c8:	f5dff0ef          	jal	24 <__mulsi3>
+  cc:	00050793          	mv	a5,a0
+  d0:	fef42623          	sw	a5,-20(s0)
+  d4:	fe842783          	lw	a5,-24(s0)
+  d8:	00178793          	addi	a5,a5,1
+  dc:	fef42423          	sw	a5,-24(s0)
+  e0:	fe842703          	lw	a4,-24(s0)
+  e4:	fdc42783          	lw	a5,-36(s0)
+  e8:	fce7fce3          	bgeu	a5,a4,c0 <calculate_factorial+0x28>
+  ec:	fec42783          	lw	a5,-20(s0)
+  f0:	00078513          	mv	a0,a5
+  f4:	02c12083          	lw	ra,44(sp)
+  f8:	02812403          	lw	s0,40(sp)
+  fc:	03010113          	addi	sp,sp,48
+ 100:	00008067          	ret
+
+00000104 <main>:
+ 104:	fe010113          	addi	sp,sp,-32
+ 108:	00112e23          	sw	ra,28(sp)
+ 10c:	00812c23          	sw	s0,24(sp)
+ 110:	02010413          	addi	s0,sp,32
+ 114:	00500513          	li	a0,5
+ 118:	f81ff0ef          	jal	98 <calculate_factorial>
+ 11c:	fea42623          	sw	a0,-20(s0)
+ 120:	400007b7          	lui	a5,0x40000
+ 124:	fef42423          	sw	a5,-24(s0)
+ 128:	fec42703          	lw	a4,-20(s0)
+ 12c:	07800793          	li	a5,120
+ 130:	00f71c63          	bne	a4,a5,148 <main+0x44>
+ 134:	fe842783          	lw	a5,-24(s0)
+ 138:	00005737          	lui	a4,0x5
+ 13c:	55570713          	addi	a4,a4,1365 # 5555 <main+0x5451>
+ 140:	00e7a023          	sw	a4,0(a5) # 40000000 <__stack_top+0x3ffe0000>
+ 144:	0140006f          	j	158 <main+0x54>
+ 148:	fe842783          	lw	a5,-24(s0)
+ 14c:	0000e737          	lui	a4,0xe
+ 150:	ead70713          	addi	a4,a4,-339 # dead <main+0xdda9>
+ 154:	00e7a023          	sw	a4,0(a5)
+ 158:	0000006f          	j	158 <main+0x54>

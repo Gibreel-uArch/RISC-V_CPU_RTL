@@ -1,7 +1,7 @@
-CC = riscv32-unknown-elf-gcc
+CC      = riscv32-unknown-elf-gcc
 OBJCOPY = riscv32-unknown-elf-objcopy
 OBJDUMP = riscv32-unknown-elf-objdump
-CFLAGS = -march=rv32i -mabi=ilp32 -O0 -nostdlib
+CFLAGS  = -march=rv32i -mabi=ilp32 -O0 -nostdlib
 LDFLAGS = -T link.ld
 
 ifndef NAME
