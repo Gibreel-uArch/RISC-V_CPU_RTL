@@ -1,4 +1,3 @@
-```markdown
 # ⚡ Stage 3: Basic 5-Stage Pipeline (`pipeline_no_hazards`)
 
 ## 📌 Overview
@@ -66,7 +65,5 @@ make
 
 # Run custom assembly test (Ensure Assembly code includes NOPs between dependent instructions)
 make TEST=program.hex
-
-```
 
 ```

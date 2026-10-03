@@ -1,4 +1,3 @@
-```markdown
 # 🔰 Stage 1: Simple Single-Cycle Core (`simpe_single_cycle`)
 
 ## 📌 Overview
@@ -82,5 +81,3 @@ make TEST=program.hex
 ### Expected Output
 
 The testbench (`top_tb.cpp`) will drive the clock and display the register contents and ALU results cycle-by-cycle, verifying that basic operations compute correctly.
-
-```

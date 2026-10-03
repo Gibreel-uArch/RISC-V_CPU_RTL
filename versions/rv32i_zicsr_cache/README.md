@@ -1,5 +1,3 @@
-
-```markdown
 # ⚡ Stage 6: The Complete Core (`rv32i_zicsr_cache`)
 
 ## 📌 Overview
@@ -76,7 +74,5 @@ make
 
 # Run C program binary (e.g., Factorial / Fibonacci)
 make TEST=../../tests/hex/factorial.hex
-
-```
 
 ```

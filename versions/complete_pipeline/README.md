@@ -1,5 +1,3 @@
-
-```markdown
 # ⚙️ Stage 4: Full 5-Stage Pipeline with Hazard Handling (`complete_pipeline`)
 
 ## 📌 Overview
@@ -73,5 +71,3 @@ make TEST=program.hex
 ### Verification
 
 You can load binaries generated from C programs (`c_programs`) into `program.hex` to confirm that loops, function calls, and pointer arithmetic run seamlessly without pipeline hazards.
-
-```

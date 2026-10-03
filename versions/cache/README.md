@@ -1,4 +1,3 @@
-```markdown
 # 🔍 Standalone Cache Implementations (`versions/cache/`)
 
 ## 📌 Overview
@@ -39,5 +38,3 @@ Demonstrates and compares memory write strategies:
 Studying these modules independently helps clarify:
 - How **Tag**, **Index**, and **Offset** bits are extracted from a 32-bit memory address.
 - How finite state machines (FSM) handle `IDLE`, `COMPARE_TAG`, `ALLOCATE`, and `WRITE_BACK` states.
-
-```

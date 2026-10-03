@@ -1,4 +1,3 @@
-```markdown
 # 🏛️ Stage 5: System Control & Traps (`rv32i_zicsr`)
 
 ## 📌 Overview
@@ -51,7 +50,5 @@ make
 
 # Test specific exception or CSR assembly programs
 make TEST=../../tests/hex/exceptions.hex
-
-```
 
 ```

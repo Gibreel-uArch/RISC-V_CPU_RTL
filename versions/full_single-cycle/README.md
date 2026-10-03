@@ -1,5 +1,3 @@
-
-```markdown
 # ⚙️ Stage 2: Full Single-Cycle Core (`full_single-cycle`)
 
 ## 📌 Overview
@@ -83,5 +81,3 @@ make TEST=program.hex
 ### Verification
 
 You can pass test programs containing jumps, loops, and array manipulation (e.g., bubble-sort) into `program.hex` to confirm proper branch execution and memory interaction.
-
-```
