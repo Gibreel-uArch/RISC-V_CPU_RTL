@@ -1,11 +1,9 @@
-# RISC-V_CPU_RTL
 
-```markdown
 # 🚀 Educational RV32I Processor Core
 
 An educational, step-by-step implementation of a 32-bit RISC-V processor core written in SystemVerilog. This project guides students and computer architecture enthusiasts through the progressive stages of CPU design—from a simple single-cycle execution engine up to a full 5-stage pipelined core featuring CSR support and instruction/data caches.
 
-![Pipeline Architecture](docs/images/pipeline.jpg)
+
 
 > **⚠️ Educational Disclaimer & Notice:**  
 > This is a hands-on, personal educational project created while learning computer architecture. While the core successfully executes the provided Assembly and C benchmarks, it may contain subtle bugs or edge-case limitations when exposed to non-standard code or unhandled hazard conditions. Feedback, issues, and contributions are greatly appreciated!
@@ -128,7 +126,7 @@ Compile your own C or Assembly routines into memory-loadable `.hex` files:
 * **Assembly Programs (`.S`):**
 ```bash
 cd tests/asm_programs
-make
+make NAME=test
 
 ```
 
@@ -136,7 +134,7 @@ make
 * **C Benchmark Programs (`.c`):**
 ```bash
 cd tests/c_programs
-make
+make NAME=test
 
 ```
 
@@ -148,6 +146,5 @@ make
 
 ## 📜 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the Apache2 License. See `LICENSE` for more information.
 
-```
