@@ -20,29 +20,6 @@ Building upon the minimal core in Stage 1, this stage extends the single-cycle d
 
 ---
 
-## 🧩 Hardware Datapath Highlights
-
-```text
-                       +-------------------+
-                       |   Branch Unit     | <--- Evaluate (BEQ, BNE, BLT...)
-                       +---------+---------+
-                                 | BranchTaken
-                                 v
-+------------------+   +-------------------+   +-------------------+
-|  PC Unit (Next)  |---|   Mux (PC+4 /     |---| Instruction Fetch |
-+------------------+   |   Branch / JALR)  |   +-------------------+
-                       +-------------------+
-                                                        |
-                                                        v
-+------------------+   +-------------------+   +-------------------+
-|   Data Memory    |<--|        ALU        |<--|  Registers File   |
-| (LB, LW, SB...)  |   +-------------------+   +-------------------+
-+------------------+
-
-```
-
----
-
 ## 📁 Included RTL Modules
 
 | Module File | Description |

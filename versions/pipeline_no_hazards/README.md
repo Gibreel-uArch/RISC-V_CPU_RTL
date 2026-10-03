@@ -23,18 +23,6 @@ Between each stage, pipeline registers store intermediate results and control si
 - `EX_MEM.sv`
 - `MEM_WB.sv`
 
----
-
-## 🧩 Hardware Datapath Diagram
-
-```text
-+------+    IF/ID    +------+    ID/EX    +------+    EX/MEM    +------+    MEM/WB    +------+
-|  IF  |=========>|  ID  |=========>|  EX  |==========>| MEM  |=========>|  WB  |
-+------+             +------+             +------+              +------+             +------+
-   ^                                                                                     |
-   +================================ Write Back Loop ====================================+
-
-```
 
 ---
 
@@ -46,7 +34,6 @@ Between each stage, pipeline registers store intermediate results and control si
 | `ID_EX.sv` | Pipeline register propagating decoded operands, immediate values, and control flags. |
 | `EX_MEM.sv` | Pipeline register carrying ALU output, store data, destination register address, and memory signals. |
 | `MEM_WB.sv` | Pipeline register carrying memory read data or ALU result to Write Back stage. |
-| `multiplexer.sv` | Helper multiplexers used across pipeline boundary selections. |
 | `rv32_types_pkg.sv` | Package defining pipeline structures, control structs, and RISC-V types. |
 | `pc_unit.sv`, `alu.sv`, `registers_file.sv`, `control_unit.sv`, etc. | Core execution units adapted to pipeline register boundaries. |
 
